@@ -1,11 +1,11 @@
 const fs = require('fs')
 
 const lerArquivo = (): unknown => {
-    return JSON.parse(fs.readFileSync('../bd.json'))
+    return JSON.parse(fs.readFileSync('./bd.json'))
 }
 
 const escreverArquivo = (conteudo: any): void => {
-    fs.writeFileSync('../bd.json', JSON.stringify(conteudo))
+    fs.writeFileSync('./bd.json', JSON.stringify(conteudo))
 }
 
 type Endereco = {
@@ -61,17 +61,37 @@ const detalharUsuario = (cpf: string): Usuario => {
     }
     return usuario
 }
-// const usuario1: Usuario = {
-//     nome: 'Igor',
-//     email: 'igor@email.com',
-//     cpf: '123456789100',
-//     endereco: null
 
-// }
-// const usuario2: Usuario = {
-//     nome: 'Guido',
-//     email: 'guido@email.com',
-//     cpf: '123456789101',
-//     endereco: null
+const excluirUsuario = (cpf: string) => {
+    const listaUsuarios = lerArquivo() as Usuario[]
+    const usuario = listaUsuarios.find(usuario => {
+        return usuario.cpf === cpf
+    })
+    if (!usuario) {
+        throw new Error('Usuário não encontrado')
+    }
+    const novaLista = listaUsuarios.filter(usuario => {
+        return usuario.cpf !== cpf
+    })
+    escreverArquivo(novaLista)
+    return usuario
+}
 
-// }
+
+const usuario1: Usuario = {
+    nome: 'Igor',
+    email: 'igor@email.com',
+    cpf: '123456789100',
+    endereco: null
+
+}
+const usuario2: Usuario = {
+    nome: 'Guido',
+    email: 'guido@email.com',
+    cpf: '123456789101',
+    endereco: null
+
+}
+
+console.log(cadastrarUsuario(usuario1), cadastrarUsuario(usuario2))
+console.log(excluirUsuario('123456789100'));
