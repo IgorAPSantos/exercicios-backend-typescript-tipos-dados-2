@@ -1,9 +1,8 @@
 const fs = require('fs/promises')
 
-const lerArquivo = async (path: string): Promise<unknown> => {
+const lerArquivo = async (): Promise<unknown> => {
     try {
-        const arquivo = JSON.parse(await fs.readFile(path)) as unknown
-        return console.log(arquivo);
+        return JSON.parse(await fs.readFile('./bd.json'))
 
     } catch (error) {
         if (
@@ -13,16 +12,14 @@ const lerArquivo = async (path: string): Promise<unknown> => {
             typeof error.message === 'string'
         ) {
             return console.log(error.message);
-
         }
     }
-
 }
 
-const escreverArquivo = async (path: string, conteudo: any): Promise<void> => {
+const escreverArquivo = async (conteudo: any): Promise<void> => {
     try {
         conteudo = JSON.stringify(conteudo)
-        await fs.writeFile(path, conteudo)
+        await fs.writeFile('./bd.json', conteudo)
 
     } catch (error) {
         if (
