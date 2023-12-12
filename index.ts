@@ -32,8 +32,21 @@ const cadastrarUsuario = (dados: Usuario): Usuario => {
     return dados
 }
 
-const listarUsuarios = (): Usuario[] => {
-    return lerArquivo() as Usuario[]
+const listarUsuarios = (filtro?: string): Usuario[] => {
+    const listaUsuarios = lerArquivo() as Usuario[]
+    if (
+        filtro &&
+        typeof filtro === 'string'
+    ) {
+        const listaFiltrada = listaUsuarios.filter(usuario => {
+            return usuario.profissao?.toLowerCase().includes(filtro.toLowerCase())
+        })
+        console.log(listaFiltrada);
+
+        return listaFiltrada
+    }
+
+    return listaUsuarios
 }
 
 const atualizarUsuario = (cpf: string, novoUsuario: Usuario): Usuario => {
@@ -78,20 +91,18 @@ const excluirUsuario = (cpf: string) => {
 }
 
 
-const usuario1: Usuario = {
-    nome: 'Igor',
-    email: 'igor@email.com',
-    cpf: '123456789100',
-    endereco: null
+// const usuario1: Usuario = {
+//     nome: 'Igor',
+//     email: 'igor@email.com',
+//     cpf: '123456789100',
+//     endereco: null
 
-}
-const usuario2: Usuario = {
-    nome: 'Guido',
-    email: 'guido@email.com',
-    cpf: '123456789101',
-    endereco: null
+// }
+// const usuario2: Usuario = {
+//     nome: 'Guido',
+//     email: 'guido@email.com',
+//     cpf: '123456789101',
+//     profissao: 'Professor BackEnd',
+//     endereco: null
+// }
 
-}
-
-console.log(cadastrarUsuario(usuario1), cadastrarUsuario(usuario2))
-console.log(excluirUsuario('123456789100'));
